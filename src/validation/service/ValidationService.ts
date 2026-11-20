@@ -30,13 +30,6 @@ export class ValidationService {
         return {
           body: { errors },
           statusCode: 400,
-          headers: {
-            ...Headers.get(),
-            ... {
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Headers': '*',
-            }
-          }
         };
       }
     }

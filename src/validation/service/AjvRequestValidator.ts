@@ -36,7 +36,6 @@ export class AjvRequestValidator implements Validator<ErrorObject> {
   }
 
   public format(errors: ErrorObject[], request: HttpRequest<object>): HttpResponse {
-    console.log(`AjvRequestValidator -- errors: ${JSON.stringify(errors)}`);
     return {
       body: {
         path: request.path,
@@ -69,10 +68,6 @@ export class AjvRequestValidator implements Validator<ErrorObject> {
           }))
       },
       statusCode: 400,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
-      }
     };
   }
 

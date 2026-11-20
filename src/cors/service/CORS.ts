@@ -28,7 +28,6 @@ export abstract class CORS {
     if (exposeHeaders) headers['Access-Control-Expose-Headers'] = exposeHeaders.join(', ');
     if (allowedMethods) headers['Access-Control-Allow-Methods'] = allowedMethods.join(', ');
     if (allowHeaders) headers['Access-Control-Allow-Headers'] = allowHeaders.join(', ');
-    if (requestMethod) headers['Access-Control-Request-Method'] = requestMethod;
     if (allowCredentials) headers['Access-Control-Allow-Credentials'] = `${allowCredentials}`;
     if (maxAge) headers['Access-Control-Max-Age'] = `${maxAge}`;
     return headers;

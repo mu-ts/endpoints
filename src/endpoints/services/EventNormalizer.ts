@@ -18,7 +18,8 @@ export class EventNormalizer {
     if (event.version === '2.0') {
       const { requestContext, routeKey, rawPath, body, headers, queryStringParameters, cookies, pathParameters, } = event;
       const { http, authorizer }  = requestContext;
-      const [ignore, resource] = routeKey.split(' ');
+      const parts = routeKey.split(' ');
+      const resource = parts.length > 1 ? parts[1] : rawPath;
       return {
         action: http.method,
         resource,

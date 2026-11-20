@@ -39,8 +39,8 @@ export class Router {
   public static register(route: HttpRoute): void {
     Logger.trace('Router.register() register route', { route });
     const path: string = `${route.path}:${route.action}`;
-    Router.routes[path] = route;
-    Logger.trace('Router.register() total routes', Object.keys(Router.routes));
+    Router._routes[path] = route;
+    Logger.trace('Router.register() total routes', Object.keys(Router._routes));
   }
 
   /**
@@ -52,7 +52,7 @@ export class Router {
   public async handle(event: any, context: LambdaContext): Promise<HttpResponse> {
     const loggingTrackerId: string = `${event.path || event.rawPath}-handle()-${context.awsRequestId}`;
     Logger.timeStart(loggingTrackerId);
-    Logger.trace('Router.handler() available events.', Object.keys(Router.routes));
+    Logger.trace('Router.handler() available events.', Object.keys(Router._routes));
     Logger.trace('Router.handler() event received.', { event: JSON.stringify(event, undefined, 2) });
 
     const request: HttpRequest<string | object> = EventNormalizer.normalize(event);
@@ -61,7 +61,7 @@ export class Router {
 
     const { resource, action } = request;
 
-    let route: HttpRoute | undefined = Router.routes?.[`${resource}:${action}`];
+    let route: HttpRoute | undefined = Router._routes?.[`${resource}:${action}`];
 
     Logger.trace('Router.handler() Direct check for route found a result?', route !== undefined);
 
@@ -69,7 +69,7 @@ export class Router {
      * If no route was found for the specific action, look under 'ANY' for the
      * same path.
      */
-    if (!route) route = Router.routes?.[`${resource}:ANY`];
+    if (!route) route = Router._routes?.[`${resource}:ANY`];
 
     /**
      * If no route is found, then return a 501.
@@ -129,14 +129,14 @@ export class Router {
            * marker to indicate that we can use the function 'serializer' down below
            */
           response._valid = true;
-          response.headers = { ...response.headers, ...{ 'Content-Type': request.headers?.['Content-Type'] || 'application/json' } };
 
           Logger.trace('Router.handler() Response after execution.', { response: JSON.stringify(response, undefined, 3) });
         }
 
       } catch (error) {
         Logger.error('Router.handler() HttpEndpointFunction implementation threw an exception.', error);
-        if (error.message.includes('schema is invalid')) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (errorMessage.includes('schema is invalid')) {
           response = {
             body: { message: 'Validation schema for this route is invalid. Check your schema using a JSON schema validator.' },
             statusCode: 500,

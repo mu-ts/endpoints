@@ -4,10 +4,9 @@
  * No deprecated X-XSS-Protection.
  */
 export const AUTHVIA_REST_SECURITY_HEADERS: Readonly<Record<string, string>> = {
-  'Set-Cookie': 'Secure',
   'X-Frame-Options': 'DENY',
   'Content-Type': 'application/json',
-  'Cache-Control': 'private max-age=86400, no-cache, no-store, immutable, must-revalidate, s-maxage=3600',
+  'Cache-Control': 'private, no-cache, no-store, must-revalidate',
   'Access-Control-Allow-Methods': 'GET, PUT, POST, PATCH, DELETE, OPTIONS',
   'Content-Security-Policy':
     "default-src 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content",
