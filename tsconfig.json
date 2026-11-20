@@ -1,20 +1,28 @@
-/* Reference: https://www.typescriptlang.org/docs/handbook/compiler-options.html */
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
+    "module": "CommonJS",
+    "target": "ES2022",
+    "moduleResolution": "Node",
+    "outDir": "lib",
     "declaration": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "lib": ["ES2017"],
-    "target": "ES2017",
-    "module": "commonjs",
-    "rootDir": "./src",
-    "outDir": "./lib",
-    "types": ["node"]
+    // "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    // "isolatedModules": false,
+    // "strict": true,
+    // "noImplicitAny": true,
+    // "useUnknownInCatchVariables": false,
+    // "inlineSourceMap": true
+
+    "baseUrl": "src",
+    "paths": {
+      "@": [ "./" ],
+    }
   },
+  "ts-node": {
+      "esm": true
+  },
+  // "lib": ["esnext"],
   "exclude": ["node_modules", "*.spec/**/*.spec.ts"],
   "include": ["src/**/*"]
 }
