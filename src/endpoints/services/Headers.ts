@@ -1,3 +1,5 @@
+import { authviaRestSecurityHeaders } from './securityHeaders';
+
 export abstract class Headers {
 
   private static defaults: {[key: string]: string} = {};
@@ -7,12 +9,10 @@ export abstract class Headers {
   /**
    * Values set here can be overridden by the lambda implementation.
    *
-   * Recommend:
-   * - Server: 'your company'
-   * - X-Powered-By: 'your company'
-   * - Set-Cookie: 'Secure'
-   * - X-Frame-Options: 'DENY'
-   * - Cache-Control: 'max-age=86400
+   * Prefer {@link Headers.useAuthviaRestDefaults} or AUTHVIA_REST_SECURITY_HEADERS.
+   * Do not set Server or X-Powered-By (information disclosure).
+   * Prefer Strict-Transport-Security, X-Content-Type-Options, X-Frame-Options,
+   * Referrer-Policy, and Content-Security-Policy with frame-ancestors 'none'.
    *
    * @param defaults to set on every request.
    */
@@ -20,6 +20,12 @@ export abstract class Headers {
     this.defaults = defaults;
   }
 
+  /**
+   * Install Authvia REST security headers as the library default (STEW-3833).
+   */
+  public static useAuthviaRestDefaults(overrides?: {[key: string]: string}): void {
+    this.defaults = authviaRestSecurityHeaders(overrides);
+  }
 
   public static get( overrides?: {[key: string]: string} ): {[key: string]: string} {
       return { ...this.defaults, ...overrides || {} };

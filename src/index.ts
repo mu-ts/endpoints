@@ -31,6 +31,8 @@ export * from './objects/model/Constructable';
  * Entrypoint object.
  */
 export * from './HttpHandler';
+export * from './endpoints/services/Headers';
+export * from './endpoints/services/securityHeaders';
 
 /**
  * Decorators
